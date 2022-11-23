@@ -28,17 +28,6 @@ const TODOList = () => {
     var arr = [...todos];
     arr[index].checked = value;
     setTodos(arr);
-    const response = await axios({
-      headers: {
-        "content-type": "application/json; charset-UTF-8",
-      },
-      method: "PUT",
-      url: `https://jsonplaceholder.typicode.com/todos?id=${id}`,
-      data: {
-        completed: value,
-      },
-    });
-    console.log(response.data);
   };
 
   const comp = todos.filter((el) => el.checked === true);
