@@ -5,25 +5,23 @@ const TODOList = () => {
   document.title = "Todo App";
   const [todos, setTodos] = useState([]);
   const [item, setItem] = useState("");
-  const [dataArr, setDataArr] = useState([]);
-
-  useEffect(() => {
-    const fetchFunction = async () => {
-      const data = await fetch("https://jsonplaceholder.typicode.com/todos?userId=1");
-      const jsonData = await data.json();
-      console.log(jsonData);
-      setTodos(jsonData);
-    };
-    fetchFunction();
-  }, []);
 
   const addTodo = () => {
-    setTodos((prev) => [...prev, { completed: false, title: item }]);
-    setItem(""); //to clear the textfield after clicking on add button
+    if (item === "") {
+      alert("Please add todo!");
+      return false;
+    } else {
+      setTodos((prev) => [...prev, { completed: false, title: item }]);
+      setItem(""); //to clear the textfield after clicking on add button
+    }
   };
 
   const clearTodos = () => {
-    setTodos([]);
+    const boolValue = window.confirm("Are you sure to delete all todos ?");
+    if (boolValue) {
+      setTodos([]);
+    }
+    return false;
   };
 
   const ItemTick = async (value, index, id) => {
@@ -40,7 +38,6 @@ const TODOList = () => {
         completed: value,
       },
     });
-
     console.log(response.data);
   };
 
@@ -75,7 +72,6 @@ const TODOList = () => {
                 checked={value.checked}
                 onChange={(e) => ItemTick(e.target.checked, index, value.id)}
               />
-
               <span
                 style={{
                   textDecoration: value.checked ? "line-through" : "none",
@@ -84,7 +80,6 @@ const TODOList = () => {
               >
                 {value.title}
               </span>
-
               <button onClick={() => removeTodo(index)}>Delete</button>
             </li>
           );
